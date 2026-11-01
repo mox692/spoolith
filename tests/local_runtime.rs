@@ -27,7 +27,12 @@ fn config(path: &Path) -> Config {
     cfg.max_flush_bytes = 2 * SEG;
     cfg.flush_threshold = SEG;
     cfg.flush_interval = Duration::from_millis(5);
-    cfg.io.preallocate = Preallocate::Fallocate;
+    // Miri does not implement fallocate / F_PREALLOCATE
+    cfg.io.preallocate = if cfg!(miri) {
+        Preallocate::ZeroFill
+    } else {
+        Preallocate::Fallocate
+    };
     cfg.warm_segments = 15;
     cfg
 }

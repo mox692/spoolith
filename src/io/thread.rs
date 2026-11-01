@@ -77,6 +77,10 @@ fn create(cfg: &Config, geo: &Geometry) -> io::Result<()> {
 }
 
 fn sync_parent_dir(path: &Path) -> io::Result<()> {
+    // Miri cannot fsync a directory fd
+    if cfg!(miri) {
+        return Ok(());
+    }
     match path.parent() {
         Some(dir) if !dir.as_os_str().is_empty() => File::open(dir)?.sync_all(),
         _ => File::open(".")?.sync_all(),

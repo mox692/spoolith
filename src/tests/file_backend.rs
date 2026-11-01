@@ -79,6 +79,7 @@ fn roundtrip_through_file() {
 }
 
 #[test]
+#[cfg_attr(miri, ignore = "Miri does not implement fallocate")]
 fn fallocate() {
     let dir = tempfile::tempdir().unwrap();
     let mut cfg = file_config(&dir);

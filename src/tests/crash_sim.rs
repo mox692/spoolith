@@ -179,11 +179,31 @@ impl Sim {
     }
 }
 
+/// Miri is orders of magnitude slower, so run a handful of cases and skip the regression file I/O.
+fn proptest_config() -> ProptestConfig {
+    if cfg!(miri) {
+        ProptestConfig {
+            cases: 3,
+            failure_persistence: None,
+            // no shrinking: it would re-run the (slow) test hundreds of times
+            max_shrink_iters: 0,
+            ..ProptestConfig::default()
+        }
+    } else {
+        ProptestConfig::with_cases(256)
+    }
+}
+
+/// Number of operations per case
+fn op_count() -> std::ops::Range<usize> {
+    if cfg!(miri) { 1..30 } else { 1..300 }
+}
+
 proptest! {
-    #![proptest_config(ProptestConfig::with_cases(256))]
+    #![proptest_config(proptest_config())]
 
     #[test]
-    fn crash_sim(cfg in config(), ops in prop::collection::vec(op(), 1..300), seed in any::<u64>()) {
+    fn crash_sim(cfg in config(), ops in prop::collection::vec(op(), op_count()), seed in any::<u64>()) {
         let mut sim = Sim { ring: SimRing::create(cfg), rng: SimRng::new(seed), oracle: Vec::new(), next_id: 0 };
         for op in ops {
             sim.run(op);
