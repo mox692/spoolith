@@ -1,0 +1,10 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 00bfe77dab35eab417a0ab4a729a9af76c67e3d2066ffe8308521a7d48a36e1e # shrinks to cfg = Config { path: "/nonexistent/ring", segment_size: 4096, disk_segments: 3, memory_segments: 2, runway_segments: 1, max_flush_bytes: 4096, sync: Data, io: IoConfig { preallocate: ZeroFill }, checksum: None, warm_segments: 0 }, ops = [Append(0), Append(9), Append(4024), Flush, Append(25), Append(4088)], seed = 0
+cc dbabe4342936b325156eb74818c2611e23848b9f7c0a7d1bf7448170b7483d1b # shrinks to cfg = Config { path: "/nonexistent/ring", segment_size: 4096, disk_segments: 3, memory_segments: 2, runway_segments: 1, max_flush_bytes: 4096, sync: Data, io: IoConfig { preallocate: ZeroFill }, checksum: None, warm_segments: 0 }, ops = [Append(4024), Append(4088)], seed = 0
+cc a2020885212e9a7448dc84189f3955e9458fd8265a92086c575c0c1f0f771e05 # shrinks to cfg = Config { path: "/nonexistent/ring", segment_size: 4096, disk_segments: 3, memory_segments: 2, runway_segments: 1, max_flush_bytes: 4096, sync: Data, io: IoConfig { preallocate: ZeroFill }, checksum: None, warm_segments: 0 }, ops = [Append(0), Append(4088), Append(9), Append(4088), CrashDuringFlush(1)], seed = 1406978475740299576
+cc 4c8a7e68b51684201f96c9b44f89268f6db94ceebe70e86c5889e93226d371a7 # shrinks to cfg = Config { path: "/nonexistent/ring", segment_size: 4096, disk_segments: 3, memory_segments: 2, runway_segments: 1, max_flush_bytes: 4096, sync: Data, io: IoConfig { preallocate: ZeroFill }, checksum: None, warm_segments: 0 }, ops = [Append(4088), CrashDuringFlush(2)], seed = 2028326077793196245
